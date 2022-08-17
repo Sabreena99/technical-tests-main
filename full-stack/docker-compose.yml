@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./src/backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./src/backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - frontend
+  frontend:
+    image: node
+    working_dir: /app
+    command: yarn buildStart
+    volumes:
+      - ./src/frontend:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NODE_OPTIONS=--openssl-legacy-provider
